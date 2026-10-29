@@ -1,0 +1,930 @@
+[
+  {
+    "rank": 1,
+    "library": "org.springframework.boot:spring-boot-starter-web:2.0.2.RELEASE",
+    "cve": "CVE-2022-22965",
+    "trps_score": 86.13,
+    "plain_language_explanation": "Positioned at root-level depth 1, this component directly exposes the Spring4Shell RCE vulnerability on web ingress endpoints. Active exploitation is confirmed in CISA KEV.",
+    "remediation_step": "Upgrade Spring Boot to >= 2.6.6 or >= 2.5.12, ensuring Spring Framework is updated to >= 5.3.18 or >= 5.2.20."
+  },
+  {
+    "rank": 2,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2022-22965",
+    "trps_score": 76.2,
+    "plain_language_explanation": "At depth 2 immediately beneath starter-web, Spring WebMVC handles HTTP request dispatching and data binding, making Spring4Shell directly reachable via crafted parameter binding.",
+    "remediation_step": "Upgrade spring-webmvc dependency to >= 5.3.18 or update the parent Spring Boot BOM."
+  },
+  {
+    "rank": 3,
+    "library": "org.springframework:spring-beans:5.0.6.RELEASE",
+    "cve": "CVE-2022-22965",
+    "trps_score": 68.31,
+    "plain_language_explanation": "At depth 3 via spring-web, spring-beans executes JavaBean property binding, the exact mechanism exploited by Spring4Shell to obtain arbitrary class loader access.",
+    "remediation_step": "Upgrade spring-beans to >= 5.3.18 or rely on updated Spring Boot 2.6.6+ dependency management."
+  },
+  {
+    "rank": 4,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-24813",
+    "trps_score": 68.4,
+    "plain_language_explanation": "Operating at depth 3 inside embedded Tomcat, this KEV-listed vulnerability permits arbitrary file write and RCE via DefaultServlet path equivalence parsing.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.100 or migrate to supported Spring Boot 2.7+/3.x with updated embedded Tomcat."
+  },
+  {
+    "rank": 5,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2020-1938",
+    "trps_score": 68.21,
+    "plain_language_explanation": "Embedded Tomcat at depth 3 exposes the Ghostcat vulnerability, allowing remote arbitrary file reading and code execution via misconfigured AJP connector handling.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.51 and disable the AJP connector if unused."
+  },
+  {
+    "rank": 6,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2023-44487",
+    "trps_score": 62.07,
+    "plain_language_explanation": "At depth 3 serving all incoming HTTP/2 traffic, Tomcat is susceptible to the Rapid Reset DDoS attack, threatening total availability of the root application.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.95 or configure an edge reverse proxy with rapid-reset mitigations."
+  },
+  {
+    "rank": 7,
+    "library": "com.h2database:h2:1.4.197",
+    "cve": "CVE-2021-42392",
+    "trps_score": 63.02,
+    "plain_language_explanation": "Direct first-party dependency at depth 1 that enables unauthenticated JNDI lookup RCE whenever the embedded H2 console or connection driver is exposed.",
+    "remediation_step": "Upgrade com.h2database:h2 to >= 2.0.206 or >= 2.1.210 immediately."
+  },
+  {
+    "rank": 8,
+    "library": "com.h2database:h2:1.4.197",
+    "cve": "CVE-2022-23221",
+    "trps_score": 56.61,
+    "plain_language_explanation": "Direct depth 1 component allows remote code execution via JDBC URL INIT parameter script execution against the H2 console.",
+    "remediation_step": "Upgrade com.h2database:h2 to >= 2.1.210 and disable h2-console in production profiles."
+  },
+  {
+    "rank": 9,
+    "library": "org.yaml:snakeyaml:1.19",
+    "cve": "CVE-2022-1471",
+    "trps_score": 50.35,
+    "plain_language_explanation": "At depth 3 under spring-boot-starter, SnakeYAML's Constructor class enables polymorphic deserialization leading to unauthenticated RCE if untrusted YAML is accepted.",
+    "remediation_step": "Upgrade org.yaml:snakeyaml to >= 2.0 or enforce SafeConstructor across all parser invocations."
+  },
+  {
+    "rank": 10,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2019-0232",
+    "trps_score": 49.91,
+    "plain_language_explanation": "At depth 3, embedded Tomcat on Windows hosts with CGI enabled allows remote attackers to execute arbitrary system commands via command-line argument injection.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.40 and ensure enableCmdLineArguments is set to false."
+  },
+  {
+    "rank": 11,
+    "library": "org.apache.tomcat.embed:tomcat-embed-websocket:8.5.31",
+    "cve": "CVE-2020-13935",
+    "trps_score": 44.58,
+    "plain_language_explanation": "At depth 3 under the web starter, an invalid WebSocket payload frame length creates an infinite loop, starving the worker pool and causing complete service outage.",
+    "remediation_step": "Upgrade tomcat-embed-websocket to >= 8.5.57."
+  },
+  {
+    "rank": 12,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2020-5398",
+    "trps_score": 50.25,
+    "plain_language_explanation": "At depth 2, handling core HTTP responses, unsanitized Content-Disposition header construction allows reflected file download malware delivery.",
+    "remediation_step": "Upgrade spring-webmvc to >= 5.0.16, >= 5.1.13, or >= 5.2.3."
+  },
+  {
+    "rank": 13,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2018-11784",
+    "trps_score": 38.81,
+    "plain_language_explanation": "At depth 3, directory redirection logic in DefaultServlet fails to sanitize URI paths, enabling external open redirection.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.34."
+  },
+  {
+    "rank": 14,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2016-1000027",
+    "trps_score": 40.36,
+    "plain_language_explanation": "At depth 2 directly powering HTTP processing, HttpInvokerServiceExporter exposes Java deserialization of untrusted stream data leading to RCE.",
+    "remediation_step": "Upgrade spring-web to >= 6.0.0 or discontinue use of HttpInvokerServiceExporter."
+  },
+  {
+    "rank": 15,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2024-50379",
+    "trps_score": 35.81,
+    "plain_language_explanation": "At depth 3, a TOCTOU race condition in JSP compilation on case-insensitive file systems enables remote arbitrary JSP file execution.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.100 or >= 9.0.98."
+  },
+  {
+    "rank": 16,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-55752",
+    "trps_score": 38.46,
+    "plain_language_explanation": "Premature URL decoding during rewrite processing at depth 3 permits bypass of request filtering and security constraint mappings.",
+    "remediation_step": "Upgrade tomcat-embed-core to the latest patch release fixing regression bug 60013."
+  },
+  {
+    "rank": 17,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-31650",
+    "trps_score": 37.61,
+    "plain_language_explanation": "Improper cleanup of invalid HTTP priority frames at depth 3 leaves dangling stream states that trigger resource exhaustion.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.99."
+  },
+  {
+    "rank": 18,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2019-0221",
+    "trps_score": 33.16,
+    "plain_language_explanation": "At depth 3, Tomcat SSI printenv directive fails to escape user environment values, allowing persistent cross-site scripting.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.40 and disable SSI servlets if unneeded."
+  },
+  {
+    "rank": 19,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2020-9484",
+    "trps_score": 34.63,
+    "plain_language_explanation": "At depth 3, FileStore session persistence allows deserialization of attacker-controlled session files when gadget libraries exist.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.55 and ensure session persistence is configured securely."
+  },
+  {
+    "rank": 20,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2024-38819",
+    "trps_score": 40.32,
+    "plain_language_explanation": "Depth 2 component serving static functional routing via WebMvc.fn enables directory traversal and arbitrary server file disclosure.",
+    "remediation_step": "Upgrade spring-webmvc to >= 5.3.41 or >= 6.1.14."
+  },
+  {
+    "rank": 21,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2019-10072",
+    "trps_score": 40.82,
+    "plain_language_explanation": "At depth 3, HTTP/2 connection window exhaustion on write allows stream starvation and Denial of Service across the embedded container.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.41."
+  },
+  {
+    "rank": 22,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2019-0199",
+    "trps_score": 40.79,
+    "plain_language_explanation": "At depth 3, processing excessive HTTP/2 SETTINGS frames causes server-wide thread exhaustion and unresponsive application endpoints.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.38."
+  },
+  {
+    "rank": 23,
+    "library": "org.thymeleaf:thymeleaf-spring5:3.0.9.RELEASE",
+    "cve": "CVE-2021-43466",
+    "trps_score": 31.38,
+    "plain_language_explanation": "At depth 2 beneath starter-thymeleaf, view controllers rendering user-controlled template expressions permit server-side template injection and RCE.",
+    "remediation_step": "Upgrade thymeleaf-spring5 to >= 3.0.13 and avoid passing raw request parameters directly to view names."
+  },
+  {
+    "rank": 24,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-47884",
+    "trps_score": 30.34,
+    "plain_language_explanation": "At depth 2, wildcard mapping with XsltView allows remote attackers to trigger arbitrary stylesheet execution and SSRF/RCE.",
+    "remediation_step": "Upgrade spring-webmvc and define explicit view name mappings instead of broad wildcards."
+  },
+  {
+    "rank": 25,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2018-8014",
+    "trps_score": 32.81,
+    "plain_language_explanation": "At depth 3, embedded Tomcat's default CORS filter configuration enables supportsCredentials with wildcard origins, leaking authenticated session data.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.32 and configure explicit, restrictive CORS origins."
+  },
+  {
+    "rank": 26,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-14721",
+    "trps_score": 30.47,
+    "plain_language_explanation": "At depth 3 under starter-json, jackson-databind default typing allows SSRF gadget exploitation via axis2-jaxws class loading.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.7 or >= 2.15.x and disable default typing."
+  },
+  {
+    "rank": 27,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-8840",
+    "trps_score": 34.37,
+    "plain_language_explanation": "At depth 3, unsafe polymorphic deserialization allows JNDI injection via xbean-reflect gadget classes, leading to remote code execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.3 or latest 2.15+ release."
+  },
+  {
+    "rank": 28,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-9548",
+    "trps_score": 32.25,
+    "plain_language_explanation": "At depth 3, polymorphic typing allows attackers to execute arbitrary code via AnterosDBCP database connection gadget chains.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.4."
+  },
+  {
+    "rank": 29,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-9547",
+    "trps_score": 32.11,
+    "plain_language_explanation": "At depth 3, missing deserialization blacklist entries for iBatis transaction classes permit polymorphic RCE attacks.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.4."
+  },
+  {
+    "rank": 30,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-14718",
+    "trps_score": 30.53,
+    "plain_language_explanation": "At depth 3, default polymorphic typing fails to block slf4j-ext gadgets, permitting remote code execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.7."
+  },
+  {
+    "rank": 31,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-19362",
+    "trps_score": 29.96,
+    "plain_language_explanation": "At depth 3, unvalidated typing allows remote attackers to leverage jboss-common-core gadgets for arbitrary command execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.8."
+  },
+  {
+    "rank": 32,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-19360",
+    "trps_score": 29.96,
+    "plain_language_explanation": "At depth 3, default typing gadget instantiation via axis2-transport-jms allows unauthenticated remote code execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.8."
+  },
+  {
+    "rank": 33,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-19361",
+    "trps_score": 29.96,
+    "plain_language_explanation": "At depth 3, OpenJPA gadget chain deserialization in jackson-databind enables arbitrary code execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.8."
+  },
+  {
+    "rank": 34,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-14540",
+    "trps_score": 30.0,
+    "plain_language_explanation": "At depth 3, HikariConfig gadget deserialization enables JNDI/database redirection and remote code execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10."
+  },
+  {
+    "rank": 35,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-20330",
+    "trps_score": 29.42,
+    "plain_language_explanation": "At depth 3, net.sf.ehcache gadget chains allow attackers to execute arbitrary commands through polymorphic deserialization.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.2."
+  },
+  {
+    "rank": 36,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-14379",
+    "trps_score": 29.27,
+    "plain_language_explanation": "At depth 3, failure to block ehcache transaction manager gadgets permits remote polymorphic payload execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.9.2."
+  },
+  {
+    "rank": 37,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-14719",
+    "trps_score": 29.71,
+    "plain_language_explanation": "At depth 3, blaze-ds gadgets allow remote attackers to execute arbitrary bytecode via deserialized JSON payloads.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.7."
+  },
+  {
+    "rank": 38,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-14720",
+    "trps_score": 29.11,
+    "plain_language_explanation": "At depth 3, failure to restrict JDK XML parser classes in polymorphic deserialization permits external XML entity injection.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.7."
+  },
+  {
+    "rank": 39,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2018-11307",
+    "trps_score": 28.62,
+    "plain_language_explanation": "At depth 3, an iBatis gadget combined with default typing permits remote data exfiltration and arbitrary class instantiation.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.6."
+  },
+  {
+    "rank": 40,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-16335",
+    "trps_score": 28.39,
+    "plain_language_explanation": "At depth 3, HikariDataSource gadgets permit JNDI injection and arbitrary code execution through untrusted JSON binding.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10."
+  },
+  {
+    "rank": 41,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-16942",
+    "trps_score": 28.61,
+    "plain_language_explanation": "At depth 3, polymorphic typing fails to restrict dangerous constructor bindings, opening the door to arbitrary gadget execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.1."
+  },
+  {
+    "rank": 42,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-16943",
+    "trps_score": 28.34,
+    "plain_language_explanation": "At depth 3, pinto-based gadgets in jackson-databind enable polymorphic deserialization vulnerabilities.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.1."
+  },
+  {
+    "rank": 43,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-17531",
+    "trps_score": 28.52,
+    "plain_language_explanation": "At depth 3, polymorphic deserialization allows remote attackers to trigger arbitrary gadget execution via JNDI references.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.1."
+  },
+  {
+    "rank": 44,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-14892",
+    "trps_score": 28.57,
+    "plain_language_explanation": "At depth 3, commons-configuration gadgets permit unauthenticated remote code execution during payload deserialization.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10."
+  },
+  {
+    "rank": 45,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-17267",
+    "trps_score": 28.31,
+    "plain_language_explanation": "At depth 3, EhcacheJtaTransactionManagerLookup gadget allows attackers to conduct polymorphic deserialization exploits.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10."
+  },
+  {
+    "rank": 46,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-9546",
+    "trps_score": 28.3,
+    "plain_language_explanation": "At depth 3, shaded HikariCP classes permit remote attackers to instantiate database connection pools and trigger RCE.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.4."
+  },
+  {
+    "rank": 47,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-14893",
+    "trps_score": 28.16,
+    "plain_language_explanation": "At depth 3, xalan gadget classes allow malicious polymorphic deserialization and arbitrary script execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10."
+  },
+  {
+    "rank": 48,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-65905",
+    "trps_score": 27.19,
+    "plain_language_explanation": "At depth 3, replay vulnerabilities in the DIGEST authenticator allow attackers to bypass HTTP authentication constraints.",
+    "remediation_step": "Upgrade tomcat-embed-core to a version with hardened DIGEST nonce validation."
+  },
+  {
+    "rank": 49,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-43512",
+    "trps_score": 27.4,
+    "plain_language_explanation": "Critical security constraint bypass at depth 3 enables unauthenticated access to protected web application paths.",
+    "remediation_step": "Upgrade tomcat-embed-core to patched maintenance releases."
+  },
+  {
+    "rank": 50,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-41293",
+    "trps_score": 27.5,
+    "plain_language_explanation": "High severity security flaw in Tomcat core at depth 3 directly compromises the container's request handling pipeline.",
+    "remediation_step": "Upgrade tomcat-embed-core to latest supported patch."
+  },
+  {
+    "rank": 51,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-31651",
+    "trps_score": 28.19,
+    "plain_language_explanation": "At depth 3, improper escape neutralization in rewrite rules permits control sequence injection and request spoofing.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.99."
+  },
+  {
+    "rank": 52,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-43515",
+    "trps_score": 25.44,
+    "plain_language_explanation": "At depth 3, core parsing flaws permit request smuggling and unauthorized boundary traversal.",
+    "remediation_step": "Upgrade tomcat-embed-core to patched versions."
+  },
+  {
+    "rank": 53,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-66614",
+    "trps_score": 25.18,
+    "plain_language_explanation": "At depth 3, improper request validation allows attackers to bypass security filters and access restricted endpoints.",
+    "remediation_step": "Upgrade tomcat-embed-core to latest security fix."
+  },
+  {
+    "rank": 54,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-65182",
+    "trps_score": 25.25,
+    "plain_language_explanation": "At depth 3, path ordering precedence bugs allow requests to bypass strict URL security constraints.",
+    "remediation_step": "Upgrade tomcat-embed-core and verify web.xml security-constraint ordering."
+  },
+  {
+    "rank": 55,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2026-68525",
+    "trps_score": 25.24,
+    "plain_language_explanation": "At depth 3, FORM authentication allows attackers to bypass POST access restrictions during credential submission.",
+    "remediation_step": "Upgrade tomcat-embed-core to patched release."
+  },
+  {
+    "rank": 56,
+    "library": "org.thymeleaf:thymeleaf-spring5:3.0.9.RELEASE",
+    "cve": "CVE-2026-40478",
+    "trps_score": 28.03,
+    "plain_language_explanation": "At depth 2, expression execution mechanism bypasses allow arbitrary method invocation during template evaluation.",
+    "remediation_step": "Upgrade thymeleaf-spring5 to >= 3.1.4.RELEASE."
+  },
+  {
+    "rank": 57,
+    "library": "org.thymeleaf:thymeleaf-spring5:3.0.9.RELEASE",
+    "cve": "CVE-2026-40477",
+    "trps_score": 27.95,
+    "plain_language_explanation": "At depth 2, sandbox bypass in Thymeleaf expression processor allows unauthorized access to underlying JVM classes.",
+    "remediation_step": "Upgrade thymeleaf-spring5 to >= 3.1.4.RELEASE."
+  },
+  {
+    "rank": 58,
+    "library": "org.thymeleaf:thymeleaf-spring5:3.0.9.RELEASE",
+    "cve": "CVE-2026-41901",
+    "trps_score": 27.82,
+    "plain_language_explanation": "At depth 2, template engine expression restrictions can be circumvented to execute arbitrary system operations.",
+    "remediation_step": "Upgrade thymeleaf-spring5 to >= 3.1.5.RELEASE."
+  },
+  {
+    "rank": 59,
+    "library": "org.thymeleaf:thymeleaf:3.0.9.RELEASE",
+    "cve": "CVE-2026-40478",
+    "trps_score": 25.13,
+    "plain_language_explanation": "At depth 3 beneath thymeleaf-spring5, the core engine fails to sandbox untrusted template expressions properly.",
+    "remediation_step": "Upgrade org.thymeleaf:thymeleaf to >= 3.1.4.RELEASE."
+  },
+  {
+    "rank": 60,
+    "library": "org.thymeleaf:thymeleaf:3.0.9.RELEASE",
+    "cve": "CVE-2026-40477",
+    "trps_score": 25.06,
+    "plain_language_explanation": "At depth 3, core expression execution flaws allow attackers to execute restricted expressions in templates.",
+    "remediation_step": "Upgrade org.thymeleaf:thymeleaf to >= 3.1.4.RELEASE."
+  },
+  {
+    "rank": 61,
+    "library": "org.thymeleaf:thymeleaf:3.0.9.RELEASE",
+    "cve": "CVE-2026-41901",
+    "trps_score": 24.95,
+    "plain_language_explanation": "At depth 3, expression parser flaws allow unauthorized object access in the template execution context.",
+    "remediation_step": "Upgrade org.thymeleaf:thymeleaf to >= 3.1.5.RELEASE."
+  },
+  {
+    "rank": 62,
+    "library": "org.hibernate:hibernate-core:5.2.17.Final",
+    "cve": "CVE-2026-0603",
+    "trps_score": 25.86,
+    "plain_language_explanation": "At depth 2 under starter-data-jpa, unescaped non-alphanumeric values allow second-order SQL injection in database persistence queries.",
+    "remediation_step": "Upgrade hibernate-core to >= 5.6.15.Final or >= 6.2+."
+  },
+  {
+    "rank": 63,
+    "library": "dom4j:dom4j:1.6.1",
+    "cve": "CVE-2020-10683",
+    "trps_score": 29.04,
+    "plain_language_explanation": "At depth 3 under Hibernate, dom4j parses external DTDs by default, enabling XXE data exfiltration from underlying hosts.",
+    "remediation_step": "Upgrade dom4j to >= 2.1.3."
+  },
+  {
+    "rank": 64,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2019-12384",
+    "trps_score": 28.75,
+    "plain_language_explanation": "At depth 3, logback-core gadget classes combined with jackson-databind default typing permit SSRF and SQL injection.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.9.1."
+  },
+  {
+    "rank": 65,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2022-22950",
+    "trps_score": 27.88,
+    "plain_language_explanation": "At depth 3 under WebMVC, SpEL expression evaluation with high EPSS enables catastrophic ReDoS and CPU starvation.",
+    "remediation_step": "Upgrade spring-expression to >= 5.3.17 or >= 5.2.20."
+  },
+  {
+    "rank": 66,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2025-48988",
+    "trps_score": 29.08,
+    "plain_language_explanation": "At depth 3, unthrottled resource allocation in Tomcat request parsing permits severe denial-of-service conditions.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.100."
+  },
+  {
+    "rank": 67,
+    "library": "org.yaml:snakeyaml:1.19",
+    "cve": "CVE-2017-18640",
+    "trps_score": 28.06,
+    "plain_language_explanation": "At depth 3, alias entity expansion in SnakeYAML allows Billion Laughs DoS attacks exhausting application heap memory.",
+    "remediation_step": "Upgrade org.yaml:snakeyaml to >= 1.26."
+  },
+  {
+    "rank": 68,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2020-11996",
+    "trps_score": 28.05,
+    "plain_language_explanation": "At depth 3, specially crafted HTTP/2 request sequences trigger sustained 100% CPU lockups on the embedded server.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.56."
+  },
+  {
+    "rank": 69,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2024-24549",
+    "trps_score": 27.05,
+    "plain_language_explanation": "At depth 3, improper input validation during HTTP/2 request streaming triggers unhandled exceptions and container DoS.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.99."
+  },
+  {
+    "rank": 70,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2021-24122",
+    "trps_score": 22.58,
+    "plain_language_explanation": "At depth 3, serving resources from network NTFS file systems leaks JSP source code and static web resources.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.60."
+  },
+  {
+    "rank": 71,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2018-8034",
+    "trps_score": 26.5,
+    "plain_language_explanation": "At depth 3, missing TLS hostname verification in WebSocket client connections permits man-in-the-middle interception.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.32."
+  },
+  {
+    "rank": 72,
+    "library": "org.apache.tomcat.embed:tomcat-embed-core:8.5.31",
+    "cve": "CVE-2021-25122",
+    "trps_score": 25.69,
+    "plain_language_explanation": "At depth 3, h2c connection upgrade processing leaks request headers and concurrent user session fragments.",
+    "remediation_step": "Upgrade tomcat-embed-core to >= 8.5.63."
+  },
+  {
+    "rank": 73,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2024-22243",
+    "trps_score": 26.14,
+    "plain_language_explanation": "At depth 2, UriComponentsBuilder host parsing allows URL spoofing, leading to SSRF and open redirect vulnerabilities.",
+    "remediation_step": "Upgrade spring-web to >= 5.3.32 or >= 6.0.17."
+  },
+  {
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2024-22259",
+    "trps_score": 25.71,
+    "rank": 74,
+    "plain_language_explanation": "At depth 2, inadequate validation in UriComponentsBuilder permits attackers to bypass host validation checks.",
+    "remediation_step": "Upgrade spring-web to >= 5.3.33 or >= 6.0.18."
+  },
+  {
+    "rank": 75,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2024-22262",
+    "trps_score": 25.29,
+    "plain_language_explanation": "At depth 2, URL host validation bypass in UriComponentsBuilder enables open redirects and internal SSRF.",
+    "remediation_step": "Upgrade spring-web to >= 5.3.34 or >= 6.0.19."
+  },
+  {
+    "rank": 76,
+    "library": "org.hibernate.validator:hibernate-validator:6.0.9.Final",
+    "cve": "CVE-2025-35036",
+    "trps_score": 22.69,
+    "plain_language_explanation": "At depth 2 under starter-web, custom constraint violation message interpolation evaluates EL expressions, enabling remote code execution.",
+    "remediation_step": "Upgrade hibernate-validator to >= 6.2.0 or >= 7.0.0."
+  },
+  {
+    "rank": 77,
+    "library": "org.hibernate:hibernate-core:5.2.17.Final",
+    "cve": "CVE-2020-25638",
+    "trps_score": 23.67,
+    "plain_language_explanation": "At depth 2 under JPA starter, improper literal escaping in JPA Criteria queries results in SQL injection.",
+    "remediation_step": "Upgrade hibernate-core to >= 5.3.20.Final or >= 5.4.24.Final."
+  },
+  {
+    "rank": 78,
+    "library": "org.hibernate:hibernate-core:5.2.17.Final",
+    "cve": "CVE-2019-14900",
+    "trps_score": 20.65,
+    "plain_language_explanation": "At depth 2 under JPA starter, SQL injection in the JPA Criteria API allows unauthorized database manipulation.",
+    "remediation_step": "Upgrade hibernate-core to >= 5.3.18.Final or >= 5.4.18.Final."
+  },
+  {
+    "rank": 79,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41845",
+    "trps_score": 21.9,
+    "plain_language_explanation": "At depth 2, incorrect escaping in JavaScriptUtils.javaScriptEscape() enables client-side XSS injection.",
+    "remediation_step": "Upgrade spring-webmvc to latest patched release."
+  },
+  {
+    "rank": 80,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41842",
+    "trps_score": 23.2,
+    "plain_language_explanation": "At depth 2, static resource resolution logic allows attackers to cause excessive thread consumption and DoS.",
+    "remediation_step": "Upgrade spring-webmvc to latest release."
+  },
+  {
+    "rank": 81,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41843",
+    "trps_score": 18.27,
+    "plain_language_explanation": "At depth 2, static resource resolvers fail to sanitize relative paths, allowing path traversal attacks.",
+    "remediation_step": "Upgrade spring-webmvc to latest maintenance release."
+  },
+  {
+    "rank": 82,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41841",
+    "trps_score": 18.26,
+    "plain_language_explanation": "At depth 2, static resource handler flaws expose sensitive internal configuration files.",
+    "remediation_step": "Upgrade spring-webmvc to patched release."
+  },
+  {
+    "rank": 83,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41846",
+    "trps_score": 18.2,
+    "plain_language_explanation": "At depth 2, unescaped user inputs in JSP form tag CSS attributes permit stored XSS injection.",
+    "remediation_step": "Upgrade spring-webmvc and sanitize CSS attribute values."
+  },
+  {
+    "rank": 84,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41853",
+    "trps_score": 16.36,
+    "plain_language_explanation": "At depth 2, multipart parser parsing flaws permit request smuggling across reverse proxies.",
+    "remediation_step": "Upgrade spring-webmvc to latest patched version."
+  },
+  {
+    "rank": 85,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-22745",
+    "trps_score": 16.41,
+    "plain_language_explanation": "At depth 2, resource resolution allows attackers to exhaust server memory through crafted static path queries.",
+    "remediation_step": "Upgrade spring-webmvc to patched version."
+  },
+  {
+    "rank": 86,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-41844",
+    "trps_score": 12.97,
+    "plain_language_explanation": "At depth 2, unspecified view name mappings allow attackers to craft open redirect URLs.",
+    "remediation_step": "Upgrade spring-webmvc and explicitly assign view names."
+  },
+  {
+    "rank": 87,
+    "library": "org.springframework:spring-webmvc:5.0.6.RELEASE",
+    "cve": "CVE-2026-22741",
+    "trps_score": 9.61,
+    "plain_language_explanation": "At depth 2, static resource caching vulnerabilities enable web cache poisoning attacks.",
+    "remediation_step": "Upgrade spring-webmvc to latest release."
+  },
+  {
+    "rank": 88,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2026-41849",
+    "trps_score": 20.76,
+    "plain_language_explanation": "At depth 3, integer overflow in SpEL evaluation leads to unexpected expression outcomes and memory exhaustion.",
+    "remediation_step": "Upgrade spring-expression to latest version."
+  },
+  {
+    "rank": 89,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2026-41850",
+    "trps_score": 20.8,
+    "plain_language_explanation": "At depth 3, algorithmic complexity flaws in SpEL evaluation allow users to mount severe CPU-bound DoS attacks.",
+    "remediation_step": "Upgrade spring-expression to patched version."
+  },
+  {
+    "rank": 90,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2023-20861",
+    "trps_score": 18.2,
+    "plain_language_explanation": "At depth 3, unconstrained SpEL parsing of untrusted expressions results in memory exhaustion and DoS.",
+    "remediation_step": "Upgrade spring-expression to >= 5.3.26 or >= 6.0.7."
+  },
+  {
+    "rank": 91,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2023-20863",
+    "trps_score": 18.24,
+    "plain_language_explanation": "At depth 3, crafted SpEL expressions can cause regular expression backtracking and thread lockups.",
+    "remediation_step": "Upgrade spring-expression to >= 5.3.27 or >= 6.0.8."
+  },
+  {
+    "rank": 92,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2026-41851",
+    "trps_score": 14.73,
+    "plain_language_explanation": "At depth 3, evaluating user-supplied SpEL inputs triggers unhandled exceptions causing thread termination.",
+    "remediation_step": "Upgrade spring-expression to latest version."
+  },
+  {
+    "rank": 93,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2024-38808",
+    "trps_score": 12.02,
+    "plain_language_explanation": "At depth 3, complex nested SpEL expressions cause CPU lockups and application starvation.",
+    "remediation_step": "Upgrade spring-expression to >= 5.3.39 or >= 6.1.13."
+  },
+  {
+    "rank": 94,
+    "library": "org.springframework:spring-expression:5.0.6.RELEASE",
+    "cve": "CVE-2026-41852",
+    "trps_score": 10.26,
+    "plain_language_explanation": "At depth 3, zero-argument method invocation bypass allows invoking restricted methods in read-only SpEL contexts.",
+    "remediation_step": "Upgrade spring-expression to patched version."
+  },
+  {
+    "rank": 95,
+    "library": "org.springframework:spring-beans:5.0.6.RELEASE",
+    "cve": "CVE-2022-22970",
+    "trps_score": 15.16,
+    "plain_language_explanation": "At depth 3, data binding on multipart file uploads can lead to excessive resource consumption and DoS.",
+    "remediation_step": "Upgrade spring-beans to >= 5.3.20 or >= 5.2.22."
+  },
+  {
+    "rank": 96,
+    "library": "org.springframework:spring-context:5.0.6.RELEASE",
+    "cve": "CVE-2022-22968",
+    "trps_score": 16.18,
+    "plain_language_explanation": "At depth 3, case-sensitive pattern matching in DataBinder disallowedFields allows attackers to bypass property binding controls.",
+    "remediation_step": "Upgrade spring-context to >= 5.3.19 or >= 5.2.21."
+  },
+  {
+    "rank": 97,
+    "library": "org.springframework:spring-context:5.0.6.RELEASE",
+    "cve": "CVE-2024-38820",
+    "trps_score": 8.72,
+    "plain_language_explanation": "At depth 3, locale-dependent lowercasing in DataBinder disallowedFields allows casing bypass under non-English locales.",
+    "remediation_step": "Upgrade spring-context to >= 5.3.41 or >= 6.1.14."
+  },
+  {
+    "rank": 98,
+    "library": "org.springframework:spring-context:5.0.6.RELEASE",
+    "cve": "CVE-2025-22233",
+    "trps_score": 8.67,
+    "plain_language_explanation": "At depth 3, incomplete locale-independent lowercasing allows parameter binder restriction bypass.",
+    "remediation_step": "Upgrade spring-context to latest patched maintenance release."
+  },
+  {
+    "rank": 99,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2024-38809",
+    "trps_score": 16.57,
+    "plain_language_explanation": "At depth 2, parsing crafted ETag values in If-Match/If-None-Match headers triggers regex catastrophic backtracking and DoS.",
+    "remediation_step": "Upgrade spring-web to >= 5.3.39 or >= 6.1.13."
+  },
+  {
+    "rank": 100,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2018-11039",
+    "trps_score": 19.01,
+    "plain_language_explanation": "At depth 2, HiddenHttpMethodFilter allows arbitrary HTTP method override via query parameters, bypassing route security controls.",
+    "remediation_step": "Upgrade spring-web to >= 5.0.7 or disable HiddenHttpMethodFilter."
+  },
+  {
+    "rank": 101,
+    "library": "org.springframework:spring-web:5.0.6.RELEASE",
+    "cve": "CVE-2024-38820",
+    "trps_score": 9.73,
+    "plain_language_explanation": "At depth 2, locale-dependent string conversion flaws in DataBinder permit binding filter circumvention.",
+    "remediation_step": "Upgrade spring-web to >= 5.3.41 or >= 6.1.14."
+  },
+  {
+    "rank": 102,
+    "library": "org.springframework.data:spring-data-commons:2.0.7.RELEASE",
+    "cve": "CVE-2026-41716",
+    "trps_score": 20.79,
+    "plain_language_explanation": "At depth 3 under Spring Data JPA, unbounded property lookup caching retains untrusted strings, causing JVM heap exhaustion.",
+    "remediation_step": "Upgrade spring-data-commons to latest patched version."
+  },
+  {
+    "rank": 103,
+    "library": "org.springframework.data:spring-data-commons:2.0.7.RELEASE",
+    "cve": "CVE-2026-41721",
+    "trps_score": 16.37,
+    "plain_language_explanation": "At depth 3, controller endpoints leveraging Spring Data Web Support can be targeted with crafted requests to trigger DoS.",
+    "remediation_step": "Upgrade spring-data-commons to latest release."
+  },
+  {
+    "rank": 104,
+    "library": "org.springframework.data:spring-data-commons:2.0.7.RELEASE",
+    "cve": "CVE-2026-41711",
+    "trps_score": 16.36,
+    "plain_language_explanation": "At depth 3, recursive parsing of Sort parameters leads to StackOverflowError and thread termination.",
+    "remediation_step": "Upgrade spring-data-commons to patched version."
+  },
+  {
+    "rank": 105,
+    "library": "org.springframework.data:spring-data-jpa:2.0.7.RELEASE",
+    "cve": "CVE-2019-3802",
+    "trps_score": 16.69,
+    "plain_language_explanation": "At depth 2 under data-jpa, ExampleMatcher with matching strategies fails to sanitize wildcards, allowing data leakage.",
+    "remediation_step": "Upgrade spring-data-jpa to >= 2.0.14 or >= 2.1.6."
+  },
+  {
+    "rank": 106,
+    "library": "org.springframework.data:spring-data-jpa:2.0.7.RELEASE",
+    "cve": "CVE-2019-3797",
+    "trps_score": 11.1,
+    "plain_language_explanation": "At depth 2, derived query predicates like startingWith or containing fail to escape wildcards, permitting query alteration.",
+    "remediation_step": "Upgrade spring-data-jpa to >= 2.0.13 or >= 2.1.5."
+  },
+  {
+    "rank": 107,
+    "library": "org.hibernate.validator:hibernate-validator:6.0.9.Final",
+    "cve": "CVE-2019-10219",
+    "trps_score": 19.43,
+    "plain_language_explanation": "At depth 2, SafeHtml validator fails to sanitize HTML comments, permitting stored cross-site scripting bypasses.",
+    "remediation_step": "Upgrade hibernate-validator to >= 6.0.18.Final."
+  },
+  {
+    "rank": 108,
+    "library": "org.hibernate.validator:hibernate-validator:6.0.9.Final",
+    "cve": "CVE-2023-1932",
+    "trps_score": 18.92,
+    "plain_language_explanation": "At depth 2, SafeHtmlValidator isValid method can be bypassed by omitting required elements, allowing HTML injection.",
+    "remediation_step": "Upgrade hibernate-validator to >= 6.2.0 or migrate off deprecated SafeHtml annotation."
+  },
+  {
+    "rank": 109,
+    "library": "org.hibernate.validator:hibernate-validator:6.0.9.Final",
+    "cve": "CVE-2020-10693",
+    "trps_score": 17.03,
+    "plain_language_explanation": "At depth 2, improper interpolation in validation message formatting evaluates invalid EL expressions as valid.",
+    "remediation_step": "Upgrade hibernate-validator to >= 6.1.3.Final."
+  },
+  {
+    "rank": 110,
+    "library": "dom4j:dom4j:1.6.1",
+    "cve": "CVE-2018-1000632",
+    "trps_score": 22.5,
+    "plain_language_explanation": "At depth 3 under Hibernate, dom4j allows XML injection via unvalidated element and attribute additions.",
+    "remediation_step": "Upgrade dom4j to >= 2.1.1."
+  },
+  {
+    "rank": 111,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-36179",
+    "trps_score": 27.05,
+    "plain_language_explanation": "At depth 3, DBCP connection pool gadget classes enable polymorphic deserialization vulnerabilities.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.8."
+  },
+  {
+    "rank": 112,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-10673",
+    "trps_score": 26.49,
+    "plain_language_explanation": "At depth 3, Caucho ResourceRef gadgets allow arbitrary object injection and remote execution.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.4."
+  },
+  {
+    "rank": 113,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-11113",
+    "trps_score": 26.01,
+    "plain_language_explanation": "At depth 3, OpenJPA WASRegistryManagedRuntime gadgets permit polymorphic deserialization exploitation.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.4."
+  },
+  {
+    "rank": 114,
+    "library": "com.fasterxml.jackson.core:jackson-databind:2.9.5",
+    "cve": "CVE-2020-35728",
+    "trps_score": 25.79,
+    "plain_language_explanation": "At depth 3, Oracle WLS JNDI connector gadgets permit remote code execution through polymorphic typing.",
+    "remediation_step": "Upgrade jackson-databind to >= 2.9.10.8."
+  },
+  {
+    "rank": 115,
+    "library": "org.springframework.boot:spring-boot-devtools:2.0.2.RELEASE",
+    "cve": "CVE-2026-40972",
+    "trps_score": 26.18,
+    "plain_language_explanation": "At depth 1, devtools remote application secret exposure via timing attacks is serious, though DevTools should never be deployed to production.",
+    "remediation_step": "Ensure spring-boot-devtools is strictly scoped as 'test' or 'provided' and excluded from production builds."
+  },
+  {
+    "rank": 116,
+    "library": "org.springframework.boot:spring-boot:2.0.2.RELEASE",
+    "cve": "CVE-2022-27772",
+    "trps_score": 24.18,
+    "plain_language_explanation": "At depth 2 via devtools, local shared temporary directory hijacking exposes server runtime files to local attackers.",
+    "remediation_step": "Upgrade spring-boot to >= 2.2.11.RELEASE and restrict OS temporary directory permissions."
+  }
+]
