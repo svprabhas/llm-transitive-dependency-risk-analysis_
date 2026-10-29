@@ -13,7 +13,7 @@ class LLMAnalyzer:
             self.client = genai.Client(api_key=api_key)
         else:
             raise ValueError(
-                "[-] Gemini API Key not found! Please set DIRECT_API_KEY at the top of src/llm_analyzer.py"
+                "Gemini API key not found! Set GEMINI_API_KEY in your environment."
             )
 
     def analyze_findings(self, scored_findings):
